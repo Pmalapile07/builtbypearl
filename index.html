@@ -839,53 +839,47 @@
       var H = canvas.height;
       var ink = '#232323';
 
-      var bars = 5;
-      var heights = [0.3, 0.46, 0.4, 0.7, 1];
-      var barW = 40;
-      var gap = (W - bars * barW) / (bars + 1);
-
-      function ease(t){
-        if(t < 0) return 0;
-        if(t > 1) return 1;
-        return t * t * (3 - 2 * t);
-      }
+      var shapes = [
+        { cx: 110, cy: 110, size: 70, type: 'square', orbit: 16, speed: 0.00016, phase: 0.0,  spin: 0.00014 },
+        { cx: 270, cy: 90,  size: 42, type: 'circle', orbit: 12, speed: 0.00024, phase: 1.4,  spin: 0 },
+        { cx: 250, cy: 240, size: 100,type: 'square', orbit: 14, speed: 0.00012, phase: 2.6,  spin: -0.0001 },
+        { cx: 100, cy: 270, size: 34, type: 'circle', orbit: 18, speed: 0.0003,  phase: 0.8,  spin: 0 },
+        { cx: 190, cy: 180, size: 26, type: 'square', orbit: 10, speed: 0.00035, phase: 3.4,  spin: 0.00022 }
+      ];
 
       function draw(ts){
         ctx.clearRect(0, 0, W, H);
-        var cycle = 3600;
-        var t = (ts % cycle) / cycle;
-        var points = [];
 
-        for(var i = 0; i < bars; i++){
-          var delay = i * 0.08;
-          var local = (t - delay) / 0.5;
-          var grown = ease(local) * heights[i];
-          var barH = grown * (H - 36);
-          var x = gap + i * (barW + gap);
-          var y = H - 20 - barH;
+        shapes.forEach(function(s){
+          var x = s.cx + Math.cos(ts * s.speed + s.phase) * s.orbit;
+          var y = s.cy + Math.sin(ts * s.speed + s.phase) * s.orbit;
+
+          ctx.save();
+          ctx.translate(x, y);
+          if(s.spin){ ctx.rotate(ts * s.spin + s.phase); }
           ctx.fillStyle = ink;
-          ctx.fillRect(x, y, barW, barH);
-          points.push([x + barW / 2, y]);
-        }
 
-        ctx.strokeStyle = ink;
-        ctx.lineWidth = 3;
-        ctx.lineJoin = 'round';
-        ctx.beginPath();
-        points.forEach(function(p, idx){
-          if(idx === 0){ ctx.moveTo(p[0], p[1]); }
-          else{ ctx.lineTo(p[0], p[1]); }
-        });
-        ctx.stroke();
-
-        points.forEach(function(p){
-          ctx.beginPath();
-          ctx.arc(p[0], p[1], 6, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
-          ctx.fill();
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = ink;
-          ctx.stroke();
+          if(s.type === 'square'){
+            var r = s.size * 0.14;
+            var h = s.size / 2;
+            ctx.beginPath();
+            ctx.moveTo(-h + r, -h);
+            ctx.lineTo(h - r, -h);
+            ctx.quadraticCurveTo(h, -h, h, -h + r);
+            ctx.lineTo(h, h - r);
+            ctx.quadraticCurveTo(h, h, h - r, h);
+            ctx.lineTo(-h + r, h);
+            ctx.quadraticCurveTo(-h, h, -h, h - r);
+            ctx.lineTo(-h, -h + r);
+            ctx.quadraticCurveTo(-h, -h, -h + r, -h);
+            ctx.closePath();
+            ctx.fill();
+          } else {
+            ctx.beginPath();
+            ctx.arc(0, 0, s.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
         });
 
         requestAnimationFrame(draw);
