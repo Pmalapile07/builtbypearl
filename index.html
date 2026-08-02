@@ -838,49 +838,42 @@
       var W = canvas.width;
       var H = canvas.height;
       var ink = '#232323';
+      var cx = W / 2;
+      var cy = H / 2;
 
-      var shapes = [
-        { cx: 110, cy: 110, size: 70, type: 'square', orbit: 16, speed: 0.00016, phase: 0.0,  spin: 0.00014 },
-        { cx: 270, cy: 90,  size: 42, type: 'circle', orbit: 12, speed: 0.00024, phase: 1.4,  spin: 0 },
-        { cx: 250, cy: 240, size: 100,type: 'square', orbit: 14, speed: 0.00012, phase: 2.6,  spin: -0.0001 },
-        { cx: 100, cy: 270, size: 34, type: 'circle', orbit: 18, speed: 0.0003,  phase: 0.8,  spin: 0 },
-        { cx: 190, cy: 180, size: 26, type: 'square', orbit: 10, speed: 0.00035, phase: 3.4,  spin: 0.00022 }
-      ];
+      var n = 500;
+      var points = [];
+      for(var i = 0; i <= n; i++){
+        var t = (i / n) * Math.PI * 2;
+        var x = cx + Math.sin(3 * t + Math.PI / 2) * 140;
+        var y = cy + Math.sin(2 * t) * 110;
+        points.push([x, y]);
+      }
 
       function draw(ts){
         ctx.clearRect(0, 0, W, H);
+        var cycle = 4200;
+        var t = (ts % cycle) / cycle;
+        var reveal = Math.floor(t * n);
 
-        shapes.forEach(function(s){
-          var x = s.cx + Math.cos(ts * s.speed + s.phase) * s.orbit;
-          var y = s.cy + Math.sin(ts * s.speed + s.phase) * s.orbit;
+        ctx.strokeStyle = ink;
+        ctx.lineWidth = 4;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        for(var i = 0; i <= reveal; i++){
+          if(i === 0){ ctx.moveTo(points[i][0], points[i][1]); }
+          else{ ctx.lineTo(points[i][0], points[i][1]); }
+        }
+        ctx.stroke();
 
-          ctx.save();
-          ctx.translate(x, y);
-          if(s.spin){ ctx.rotate(ts * s.spin + s.phase); }
+        var head = points[reveal];
+        if(head){
+          ctx.beginPath();
+          ctx.arc(head[0], head[1], 7, 0, Math.PI * 2);
           ctx.fillStyle = ink;
-
-          if(s.type === 'square'){
-            var r = s.size * 0.14;
-            var h = s.size / 2;
-            ctx.beginPath();
-            ctx.moveTo(-h + r, -h);
-            ctx.lineTo(h - r, -h);
-            ctx.quadraticCurveTo(h, -h, h, -h + r);
-            ctx.lineTo(h, h - r);
-            ctx.quadraticCurveTo(h, h, h - r, h);
-            ctx.lineTo(-h + r, h);
-            ctx.quadraticCurveTo(-h, h, -h, h - r);
-            ctx.lineTo(-h, -h + r);
-            ctx.quadraticCurveTo(-h, -h, -h + r, -h);
-            ctx.closePath();
-            ctx.fill();
-          } else {
-            ctx.beginPath();
-            ctx.arc(0, 0, s.size / 2, 0, Math.PI * 2);
-            ctx.fill();
-          }
-          ctx.restore();
-        });
+          ctx.fill();
+        }
 
         requestAnimationFrame(draw);
       }
