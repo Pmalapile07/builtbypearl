@@ -96,8 +96,15 @@
     padding-bottom: 2px;
   }
 
-  @media (max-width: 720px){
-    nav a:not(.nav-cta){ display: none; }
+  .nav-desktop{ display: none; }
+  .nav-desktop .btn-solid{
+    padding: 10px 20px;
+  }
+  .nav-mobile{ display: flex; }
+
+  @media (min-width: 900px){
+    .nav-desktop{ display: flex; }
+    .nav-mobile{ display: none; }
   }
 
   .menu-toggle{
@@ -213,6 +220,29 @@
     margin: 0 auto;
     padding: 12vh 6vw 16vh;
     text-align: left;
+  }
+
+  .hero-graphic{ display: none; }
+
+  @media (min-width: 900px){
+    .hero{
+      max-width: 1240px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 4vw;
+      padding: 10vh 6vw;
+    }
+    .hero-graphic{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-graphic canvas{
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+    }
   }
 
   h1{
@@ -661,7 +691,13 @@
 
   <header>
     <a href="#" class="wordmark"><span class="wordmark-mark"></span>builtbypearl</a>
-    <nav>
+    <nav class="nav-desktop">
+      <a href="#services">services</a>
+      <a href="#work">projects</a>
+      <a href="#about">about</a>
+      <a href="#" class="btn-solid">Book a consultation</a>
+    </nav>
+    <nav class="nav-mobile">
       <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="menu-panel">menu</button>
     </nav>
   </header>
@@ -679,10 +715,15 @@
   </div>
 
   <section class="hero">
-    <h1>I build the<br><span class="underline-squiggle">systems<svg class="underline-svg" viewBox="0 0 200 20" preserveAspectRatio="none"><defs><linearGradient id="underline-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#232323"/><stop offset="100%" stop-color="#232323"/></linearGradient></defs><path d="M2,13 C60,4 140,4 198,11"/></svg></span> behind<br><em>modern businesses</em></h1>
-    <p>Websites, e-commerce, admin dashboards, automations, and the operational systems that help a business run, grow, and scale.</p>
-    <div class="hero-buttons">
-      <a href="#" class="btn-solid">Book a consultation</a>
+    <div class="hero-content">
+      <h1>I build the<br><span class="underline-squiggle">systems<svg class="underline-svg" viewBox="0 0 200 20" preserveAspectRatio="none"><defs><linearGradient id="underline-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#232323"/><stop offset="100%" stop-color="#232323"/></linearGradient></defs><path d="M2,13 C60,4 140,4 198,11"/></svg></span> behind<br><em>modern businesses</em></h1>
+      <p>Websites, e-commerce, admin dashboards, automations, and the operational systems that help a business run, grow, and scale.</p>
+      <div class="hero-buttons">
+        <a href="#" class="btn-solid">Book a consultation</a>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <canvas id="growth-canvas" width="320" height="320"></canvas>
     </div>
   </section>
 
@@ -757,6 +798,72 @@
           tooltip.classList.add('is-visible');
         }, 1400);
       }
+    })();
+  </script>  <script>
+    (function(){
+      var canvas = document.getElementById('growth-canvas');
+      if(!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var W = canvas.width;
+      var H = canvas.height;
+      var ink = '#232323';
+      var soft = 'rgba(35,35,35,0.15)';
+      var baseline = 'rgba(35,35,35,0.15)';
+      var bars = 5;
+      var heights = [0.26, 0.4, 0.36, 0.64, 0.9];
+      var barW = 30;
+      var gap = (W - bars * barW) / (bars + 1);
+
+      function ease(t){
+        if(t < 0) return 0;
+        if(t > 1) return 1;
+        return t * t * (3 - 2 * t);
+      }
+
+      function draw(ts){
+        ctx.clearRect(0, 0, W, H);
+        var cycle = 4200;
+        var t = (ts % cycle) / cycle;
+        var points = [];
+
+        for(var i = 0; i < bars; i++){
+          var delay = i * 0.09;
+          var local = (t - delay) / 0.55;
+          var grown = ease(local) * heights[i];
+          var barH = grown * (H - 40);
+          var x = gap + i * (barW + gap);
+          var y = H - 24 - barH;
+          ctx.fillStyle = (i === bars - 1) ? ink : soft;
+          ctx.fillRect(x, y, barW, barH);
+          points.push([x + barW / 2, y]);
+        }
+
+        ctx.strokeStyle = baseline;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, H - 24);
+        ctx.lineTo(W, H - 24);
+        ctx.stroke();
+
+        ctx.strokeStyle = ink;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        points.forEach(function(p, idx){
+          if(idx === 0){ ctx.moveTo(p[0], p[1]); }
+          else{ ctx.lineTo(p[0], p[1]); }
+        });
+        ctx.stroke();
+
+        points.forEach(function(p){
+          ctx.beginPath();
+          ctx.arc(p[0], p[1], 3, 0, Math.PI * 2);
+          ctx.fillStyle = ink;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
     })();
   </script>
 </body>
