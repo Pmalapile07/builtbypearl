@@ -838,41 +838,44 @@
       var W = canvas.width;
       var H = canvas.height;
       var ink = '#232323';
-      var cx = W / 2;
-      var cy = H / 2;
 
-      var n = 500;
-      var points = [];
-      for(var i = 0; i <= n; i++){
-        var t = (i / n) * Math.PI * 2;
-        var x = cx + Math.sin(3 * t + Math.PI / 2) * 140;
-        var y = cy + Math.sin(2 * t) * 110;
-        points.push([x, y]);
-      }
+      var cols = 6;
+      var rows = 6;
+      var gap = 14;
+      var cell = (W - gap * (cols + 1)) / cols;
+      var maxDist = (cols - 1) + (rows - 1);
 
       function draw(ts){
         ctx.clearRect(0, 0, W, H);
-        var cycle = 4200;
+        var cycle = 3000;
         var t = (ts % cycle) / cycle;
-        var reveal = Math.floor(t * n);
+        var wave = t * (maxDist + 4) - 2;
 
-        ctx.strokeStyle = ink;
-        ctx.lineWidth = 4;
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        for(var i = 0; i <= reveal; i++){
-          if(i === 0){ ctx.moveTo(points[i][0], points[i][1]); }
-          else{ ctx.lineTo(points[i][0], points[i][1]); }
-        }
-        ctx.stroke();
+        for(var row = 0; row < rows; row++){
+          for(var col = 0; col < cols; col++){
+            var d = row + col;
+            var diff = wave - d;
+            var opacity = Math.max(0, 1 - Math.abs(diff) / 2);
+            if(opacity <= 0.02) continue;
 
-        var head = points[reveal];
-        if(head){
-          ctx.beginPath();
-          ctx.arc(head[0], head[1], 7, 0, Math.PI * 2);
-          ctx.fillStyle = ink;
-          ctx.fill();
+            var x = gap + col * (cell + gap);
+            var y = gap + row * (cell + gap);
+            var r = cell * 0.16;
+
+            ctx.fillStyle = 'rgba(35,35,35,' + opacity + ')';
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + cell - r, y);
+            ctx.quadraticCurveTo(x + cell, y, x + cell, y + r);
+            ctx.lineTo(x + cell, y + cell - r);
+            ctx.quadraticCurveTo(x + cell, y + cell, x + cell - r, y + cell);
+            ctx.lineTo(x + r, y + cell);
+            ctx.quadraticCurveTo(x, y + cell, x, y + cell - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+            ctx.fill();
+          }
         }
 
         requestAnimationFrame(draw);
