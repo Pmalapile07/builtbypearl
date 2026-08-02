@@ -271,7 +271,7 @@
     }
     .hero-graphic canvas{
       width: 100%;
-      max-width: 420px;
+      max-width: 480px;
       height: auto;
     }
   }
@@ -754,7 +754,7 @@
       </div>
     </div>
     <div class="hero-graphic">
-      <canvas id="growth-canvas" width="320" height="320"></canvas>
+      <canvas id="growth-canvas" width="380" height="380"></canvas>
     </div>
   </section>
 
@@ -838,21 +838,11 @@
       var W = canvas.width;
       var H = canvas.height;
       var ink = '#232323';
-      var soft = 'rgba(35,35,35,0.28)';
 
-      var nodes = [
-        { x: 40,  y: 260 },
-        { x: 120, y: 190 },
-        { x: 90,  y: 100 },
-        { x: 190, y: 60  },
-        { x: 260, y: 130 },
-        { x: 230, y: 220 },
-        { x: 290, y: 280 }
-      ];
-
-      var edges = [
-        [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[1,5],[2,4]
-      ];
+      var bars = 5;
+      var heights = [0.3, 0.46, 0.4, 0.7, 1];
+      var barW = 40;
+      var gap = (W - bars * barW) / (bars + 1);
 
       function ease(t){
         if(t < 0) return 0;
@@ -862,37 +852,40 @@
 
       function draw(ts){
         ctx.clearRect(0, 0, W, H);
-        var cycle = 5200;
+        var cycle = 3600;
         var t = (ts % cycle) / cycle;
-        var reveal = t * edges.length;
-        var touched = {};
+        var points = [];
 
-        edges.forEach(function(edge, i){
-          if(i > reveal) return;
-          var a = nodes[edge[0]];
-          var b = nodes[edge[1]];
-          var frac = ease(Math.min(1, reveal - i));
-          var bx = a.x + (b.x - a.x) * frac;
-          var by = a.y + (b.y - a.y) * frac;
-
-          ctx.strokeStyle = soft;
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(bx, by);
-          ctx.stroke();
-
-          touched[edge[0]] = 1;
-          if(frac > 0.98){ touched[edge[1]] = 1; }
-        });
-
-        nodes.forEach(function(n, idx){
-          if(!touched[idx]) return;
-          var pulse = 4 + Math.sin(ts / 260 + idx) * 1.1;
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, pulse, 0, Math.PI * 2);
+        for(var i = 0; i < bars; i++){
+          var delay = i * 0.08;
+          var local = (t - delay) / 0.5;
+          var grown = ease(local) * heights[i];
+          var barH = grown * (H - 36);
+          var x = gap + i * (barW + gap);
+          var y = H - 20 - barH;
           ctx.fillStyle = ink;
+          ctx.fillRect(x, y, barW, barH);
+          points.push([x + barW / 2, y]);
+        }
+
+        ctx.strokeStyle = ink;
+        ctx.lineWidth = 3;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        points.forEach(function(p, idx){
+          if(idx === 0){ ctx.moveTo(p[0], p[1]); }
+          else{ ctx.lineTo(p[0], p[1]); }
+        });
+        ctx.stroke();
+
+        points.forEach(function(p){
+          ctx.beginPath();
+          ctx.arc(p[0], p[1], 6, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
           ctx.fill();
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = ink;
+          ctx.stroke();
         });
 
         requestAnimationFrame(draw);
