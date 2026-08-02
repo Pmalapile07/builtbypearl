@@ -258,9 +258,9 @@
       max-width: none;
       margin: 0;
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: minmax(0, 620px) 1fr;
       align-items: center;
-      gap: 4vw;
+      gap: 2.5vw;
       padding: 10vh 6vw;
     }
     .hero .hero-buttons{ display: none; }
@@ -271,7 +271,7 @@
     }
     .hero-graphic canvas{
       width: 100%;
-      max-width: 480px;
+      max-width: 380px;
       height: auto;
     }
   }
