@@ -855,8 +855,8 @@
           for(var col = 0; col < cols; col++){
             var d = row + col;
             var diff = wave - d;
-            var opacity = Math.max(0, 1 - Math.abs(diff) / 2);
-            if(opacity <= 0.02) continue;
+            var waveOpacity = Math.max(0, 1 - Math.abs(diff) / 3.2);
+            var opacity = Math.max(0.12, waveOpacity);
 
             var x = gap + col * (cell + gap);
             var y = gap + row * (cell + gap);
