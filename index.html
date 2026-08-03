@@ -289,7 +289,23 @@
     border-radius: 50%;
     background: var(--line);
   }
+  .terminal-code-row{
+    display: flex;
+    gap: 20px;
+  }
+  .terminal-gutter{
+    flex: 0 0 auto;
+    text-align: right;
+    color: var(--line);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.85;
+    height: 360px;
+    overflow: hidden;
+    user-select: none;
+  }
   .terminal-body{
+    flex: 1;
     color: #6b6b6b;
     font-size: 1.05rem;
     font-weight: 600;
@@ -795,7 +811,10 @@
         <div class="terminal-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
         </div>
-        <div class="terminal-body" id="terminal-body"><span id="terminal-text"></span><span class="terminal-cursor"></span></div>
+        <div class="terminal-code-row">
+          <div class="terminal-gutter" id="terminal-gutter"></div>
+          <div class="terminal-body" id="terminal-body"><span id="terminal-text"></span><span class="terminal-cursor"></span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -876,9 +895,19 @@
     (function(){
       var el = document.getElementById('terminal-text');
       var body = document.getElementById('terminal-body');
+      var gutter = document.getElementById('terminal-gutter');
       if(!el) return;
 
       var code = "import React from 'react';\n\nfunction WebsiteBuild({ client }) {\n  const {\n    brand,\n    products,\n    goals\n  } = client;\n\n  return (\n    <Website brand={brand}>\n      <Header />\n      <Hero />\n      <Ecommerce items={products} />\n      <AdminPanel access=\"owner\" />\n      <BookingSystem enabled />\n      <Footer />\n    </Website>\n  );\n}\n\nexport default WebsiteBuild;";
+
+      if(gutter){
+        var totalLines = code.split('\n').length;
+        var gutterHtml = '';
+        for(var ln = 1; ln <= totalLines; ln++){
+          gutterHtml += '<div>' + ln + '</div>';
+        }
+        gutter.innerHTML = gutterHtml;
+      }
 
       var rules = [
         { re: /^'[^']*'/, cls: 'tok-str' },
@@ -932,6 +961,7 @@
         if(buf){ html += '<span class="' + curCls + '">' + escapeHtml(buf) + '</span>'; }
         el.innerHTML = html;
         if(body){ body.scrollTop = body.scrollHeight; }
+        if(gutter){ gutter.scrollTop = body ? body.scrollTop : 0; }
       }
 
       var i = 0;
