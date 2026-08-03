@@ -269,12 +269,49 @@
       align-items: center;
       justify-content: flex-end;
     }
-    .hero-graphic canvas{
+    .hero-graphic .terminal-window{
       width: 100%;
-      max-width: 380px;
-      height: auto;
+      max-width: 420px;
     }
   }
+
+  .terminal-window{
+    background: #1c1c1c;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 44px rgba(0,0,0,0.28);
+    font-family: 'Courier New', Courier, monospace;
+  }
+  .terminal-bar{
+    display: flex;
+    gap: 6px;
+    padding: 12px 14px;
+    background: #2a2a2a;
+  }
+  .terminal-bar .dot{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #565656;
+  }
+  .terminal-body{
+    padding: 22px 20px;
+    color: #e9e9e9;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    min-height: 240px;
+  }
+  .terminal-cursor{
+    display: inline-block;
+    width: 7px;
+    height: 1em;
+    background: #e9e9e9;
+    vertical-align: text-bottom;
+    animation: term-blink 1s steps(1) infinite;
+    margin-left: 1px;
+  }
+  @keyframes term-blink{ 50%{ opacity: 0; } }
 
   h1{
     font-family: 'Inter', sans-serif;
@@ -747,14 +784,19 @@
 
   <section class="hero">
     <div class="hero-content">
-      <h1>I build the<br><span class="underline-squiggle">systems<svg class="underline-svg" viewBox="0 0 200 20" preserveAspectRatio="none"><defs><linearGradient id="underline-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#232323"/><stop offset="100%" stop-color="#232323"/></linearGradient></defs><path d="M2,13 C60,4 140,4 198,11"/></svg></span> behind<br><em>modern businesses</em></h1>
-      <p>Websites, e-commerce, admin dashboards, automations, and the operational systems that help a business run, grow, and scale.</p>
+      <h1>I build the websites and<br><span class="underline-squiggle">systems<svg class="underline-svg" viewBox="0 0 200 20" preserveAspectRatio="none"><defs><linearGradient id="underline-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#232323"/><stop offset="100%" stop-color="#232323"/></linearGradient></defs><path d="M2,13 C60,4 140,4 198,11"/></svg></span> behind<br><em>modern businesses</em></h1>
+      <p>I design and build websites, e-commerce stores, admin dashboards, and automations that help businesses run smoother and grow faster.</p>
       <div class="hero-buttons">
         <a href="#" class="btn-solid">Book a consultation</a>
       </div>
     </div>
     <div class="hero-graphic">
-      <canvas id="growth-canvas" width="380" height="380"></canvas>
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+        <div class="terminal-body"><span id="terminal-text"></span><span class="terminal-cursor"></span></div>
+      </div>
     </div>
   </section>
 
@@ -832,55 +874,37 @@
     })();
   </script>  <script>
     (function(){
-      var canvas = document.getElementById('growth-canvas');
-      if(!canvas) return;
-      var ctx = canvas.getContext('2d');
-      var W = canvas.width;
-      var H = canvas.height;
-      var ink = '#232323';
+      var el = document.getElementById('terminal-text');
+      if(!el) return;
 
-      var cols = 6;
-      var rows = 6;
-      var gap = 14;
-      var cell = (W - gap * (cols + 1)) / cols;
-      var maxDist = (cols - 1) + (rows - 1);
+      var code = "function buildSite(client) {\n  const site = create(client.brand);\n  site.addPages();\n  site.connectDomain();\n  site.deploy();\n\n  return site.isLive; // true\n}";
 
-      function draw(ts){
-        ctx.clearRect(0, 0, W, H);
-        var cycle = 3000;
-        var t = (ts % cycle) / cycle;
-        var wave = t * (maxDist + 4) - 2;
+      var i = 0;
+      var typing = true;
 
-        for(var row = 0; row < rows; row++){
-          for(var col = 0; col < cols; col++){
-            var d = row + col;
-            var diff = wave - d;
-            var waveOpacity = Math.max(0, 1 - Math.abs(diff) / 3.2);
-            var opacity = Math.max(0.12, waveOpacity);
-
-            var x = gap + col * (cell + gap);
-            var y = gap + row * (cell + gap);
-            var r = cell * 0.16;
-
-            ctx.fillStyle = 'rgba(35,35,35,' + opacity + ')';
-            ctx.beginPath();
-            ctx.moveTo(x + r, y);
-            ctx.lineTo(x + cell - r, y);
-            ctx.quadraticCurveTo(x + cell, y, x + cell, y + r);
-            ctx.lineTo(x + cell, y + cell - r);
-            ctx.quadraticCurveTo(x + cell, y + cell, x + cell - r, y + cell);
-            ctx.lineTo(x + r, y + cell);
-            ctx.quadraticCurveTo(x, y + cell, x, y + cell - r);
-            ctx.lineTo(x, y + r);
-            ctx.quadraticCurveTo(x, y, x + r, y);
-            ctx.closePath();
-            ctx.fill();
+      function tick(){
+        if(typing){
+          if(i <= code.length){
+            el.textContent = code.slice(0, i);
+            i++;
+            setTimeout(tick, 32);
+          } else {
+            typing = false;
+            setTimeout(tick, 1800);
+          }
+        } else {
+          if(i > 0){
+            i -= 3;
+            if(i < 0) i = 0;
+            el.textContent = code.slice(0, i);
+            setTimeout(tick, 14);
+          } else {
+            typing = true;
+            setTimeout(tick, 500);
           }
         }
-
-        requestAnimationFrame(draw);
       }
-      requestAnimationFrame(draw);
+      tick();
     })();
   </script>
 </body>
