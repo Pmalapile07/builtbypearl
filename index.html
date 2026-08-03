@@ -431,6 +431,61 @@
     margin-right: auto;
   }
 
+  .hero-cta{
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+  .hero-cta-field{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+  }
+  .hero-cta-input{
+    width: 0;
+    min-width: 0;
+    height: 48px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    opacity: 0;
+    outline: none;
+    transition: width 0.4s ease, opacity 0.3s ease, padding 0.4s ease, border-color 0.3s ease;
+  }
+  .hero-cta.is-open .hero-cta-input{
+    width: 340px;
+    max-width: 92vw;
+    opacity: 1;
+    padding: 0 130px 0 14px;
+    font-size: 0.78rem;
+    border-color: var(--line);
+  }
+  .hero-cta-input::placeholder{
+    color: var(--ink-soft);
+  }
+  .hero-cta-btn{
+    flex: 0 0 auto;
+    white-space: nowrap;
+    transition: all 0.4s ease;
+  }
+  .hero-cta.is-open .hero-cta-btn{
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px 14px;
+    font-size: 0.7rem;
+    border-radius: 6px;
+  }
+  .hero-cta.is-open{
+    justify-content: center;
+  }
+
   @media (max-width: 560px){
     .hero{ padding: 8vh 6vw 10vh; }
   }
@@ -699,7 +754,7 @@
     flex: 0 0 auto;
   }
   .whatsapp-float:hover{ transform: scale(1.06); }
-  .whatsapp-float svg{ width: 24px; height: 24px; }
+  .whatsapp-float svg{ width: 24px; height: 24px; position: relative; top: 2px; }
 
   .helper-panel{
     position: fixed;
@@ -804,8 +859,11 @@
     <div class="hero-content">
       <h1>I build the websites and<br><span class="underline-squiggle">systems<svg class="underline-svg" viewBox="0 0 200 20" preserveAspectRatio="none"><defs><linearGradient id="underline-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#232323"/><stop offset="100%" stop-color="#232323"/></linearGradient></defs><path d="M2,13 C60,4 140,4 198,11"/></svg></span> behind<br><em>modern businesses</em></h1>
       <p>I design and build websites, e-commerce stores, admin dashboards, and automations that help businesses run smoother and grow faster.</p>
-      <div class="hero-buttons">
-        <a href="#" class="btn-solid">Book a consultation</a>
+      <div class="hero-buttons hero-cta" id="hero-cta">
+        <div class="hero-cta-field">
+          <input type="email" class="hero-cta-input" id="hero-cta-input" placeholder="johnsmith@email.com" aria-label="Email address" tabindex="-1">
+          <button type="button" class="btn-solid hero-cta-btn" id="hero-cta-btn">Book a consultation</button>
+        </div>
       </div>
     </div>
     <div class="hero-graphic">
@@ -881,6 +939,40 @@
       });
       window.addEventListener('mouseup', function(){
         cursor.classList.remove('is-clicking');
+      });
+    })();
+  </script>
+  <script>
+    (function(){
+      var wrap = document.getElementById('hero-cta');
+      var input = document.getElementById('hero-cta-input');
+      var btn = document.getElementById('hero-cta-btn');
+      if(!wrap || !input || !btn) return;
+
+      btn.addEventListener('click', function(){
+        if(!wrap.classList.contains('is-open')){
+          wrap.classList.add('is-open');
+          input.removeAttribute('tabindex');
+          setTimeout(function(){ input.focus(); }, 380);
+          return;
+        }
+        var email = input.value.trim();
+        if(!email || !input.checkValidity()){
+          input.focus();
+          return;
+        }
+        var msg = "Hi, I'd like to book a consultation. My email is " + email;
+        window.open('https://wa.me/27732638781?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        wrap.classList.remove('is-open');
+        input.value = '';
+        input.setAttribute('tabindex', '-1');
+      });
+
+      input.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          btn.click();
+        }
       });
     })();
   </script>
