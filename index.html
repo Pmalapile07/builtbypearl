@@ -279,7 +279,6 @@
     background: #1c1c1c;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 24px 56px rgba(0,0,0,0.32);
     font-family: 'Courier New', Courier, monospace;
   }
   .terminal-bar{
@@ -878,7 +877,7 @@
       var el = document.getElementById('terminal-text');
       if(!el) return;
 
-      var code = "<button class=\"cta\">\n  Book a call\n</button>\n\n.cta {\n  background: #000;\n  color: #fff;\n  border-radius: 8px;\n}";
+      var code = "function BookCall() {\n  return (\n    <button\n      className=\"cta\"\n      onClick={handleBooking}\n    >\n      Book a call\n    </button>\n  );\n}";
 
       var i = 0;
       var typing = true;
