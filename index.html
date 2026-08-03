@@ -300,7 +300,8 @@
     font-weight: 600;
     line-height: 1.85;
     white-space: pre-wrap;
-    min-height: 360px;
+    height: 360px;
+    overflow: hidden;
   }
   .tok-kw{ color: #d8d8d8; }
   .tok-str{ color: #aeaeae; }
@@ -799,7 +800,7 @@
         <div class="terminal-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
         </div>
-        <div class="terminal-body"><span id="terminal-text"></span><span class="terminal-cursor"></span></div>
+        <div class="terminal-body" id="terminal-body"><span id="terminal-text"></span><span class="terminal-cursor"></span></div>
       </div>
     </div>
   </section>
@@ -879,13 +880,15 @@
   </script>  <script>
     (function(){
       var el = document.getElementById('terminal-text');
+      var body = document.getElementById('terminal-body');
       if(!el) return;
 
-      var code = "function WebsiteBuild({ client }) {\n  return (\n    <Website\n      brand={client.brand}\n      admin\n      bookingSystem\n    />\n  );\n}";
+      var code = "import React from 'react';\n\nfunction WebsiteBuild({ client }) {\n  const {\n    brand,\n    products,\n    goals\n  } = client;\n\n  return (\n    <Website brand={brand}>\n      <Header />\n      <Hero />\n      <Ecommerce items={products} />\n      <AdminPanel access=\"owner\" />\n      <BookingSystem enabled />\n      <Footer />\n    </Website>\n  );\n}\n\nexport default WebsiteBuild;";
 
       var rules = [
+        { re: /^'[^']*'/, cls: 'tok-str' },
         { re: /^"[^"]*"/, cls: 'tok-str' },
-        { re: /^(function|return)\b/, cls: 'tok-kw' },
+        { re: /^(import|from|export|default|function|return|const)\b/, cls: 'tok-kw' },
         { re: /^<\/?[A-Za-z][\w]*/, cls: 'tok-tag' },
         { re: /^[A-Za-z_$][\w$]*/, cls: 'tok-ident' }
       ];
@@ -933,6 +936,7 @@
         }
         if(buf){ html += '<span class="' + curCls + '">' + escapeHtml(buf) + '</span>'; }
         el.innerHTML = html;
+        if(body){ body.scrollTop = body.scrollHeight; }
       }
 
       var i = 0;
@@ -943,17 +947,17 @@
           if(i <= code.length){
             render(i);
             i++;
-            setTimeout(tick, 32);
+            setTimeout(tick, 16);
           } else {
             typing = false;
             setTimeout(tick, 1800);
           }
         } else {
           if(i > 0){
-            i -= 3;
+            i -= 4;
             if(i < 0) i = 0;
             render(i);
-            setTimeout(tick, 14);
+            setTimeout(tick, 8);
           } else {
             typing = true;
             setTimeout(tick, 500);
