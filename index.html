@@ -164,7 +164,7 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+    transition: opacity 0.4s ease, visibility 0s linear 0.4s, height 0.3s ease;
   }
   .menu-panel.is-open{
     opacity: 1;
@@ -279,11 +279,6 @@
 
   .terminal-window{
     font-family: 'Courier New', Courier, monospace;
-    background: #fafaf9;
-    border: 1px solid rgba(35,35,35,0.16);
-    border-radius: 14px;
-    padding: 24px 22px;
-    box-shadow: 0 22px 46px rgba(35,35,35,0.12);
   }
   .terminal-bar{
     display: flex;
@@ -294,7 +289,7 @@
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background: rgba(35,35,35,0.24);
+    background: var(--line);
   }
   .terminal-code-row{
     display: flex;
@@ -303,7 +298,7 @@
   .terminal-gutter{
     flex: 0 0 auto;
     text-align: right;
-    color: rgba(35,35,35,0.3);
+    color: var(--line);
     font-size: 1.05rem;
     font-weight: 400;
     line-height: 1.85;
@@ -313,7 +308,7 @@
   }
   .terminal-body{
     flex: 1;
-    color: var(--ink-soft);
+    color: #6b6b6b;
     font-size: 1.05rem;
     font-weight: 600;
     line-height: 1.85;
@@ -841,6 +836,11 @@
       var panel = document.getElementById('menu-panel');
       if(!openBtn || !panel) return;
       function openMenu(){
+        var heroButtons = document.querySelector('.hero-buttons');
+        if(heroButtons){
+          var rect = heroButtons.getBoundingClientRect();
+          panel.style.height = (rect.bottom + 40) + 'px';
+        }
         panel.classList.add('is-open');
         openBtn.setAttribute('aria-expanded', 'true');
         document.body.classList.add('menu-open');
