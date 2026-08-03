@@ -295,13 +295,17 @@
   }
   .terminal-body{
     padding: 30px 28px;
-    color: #f2f2f2;
+    color: #8a8a8a;
     font-size: 1.05rem;
     font-weight: 600;
     line-height: 1.85;
     white-space: pre-wrap;
     min-height: 360px;
   }
+  .tok-kw{ color: #d8d8d8; }
+  .tok-str{ color: #aeaeae; }
+  .tok-tag{ color: #c6c6c6; }
+  .tok-ident{ color: #ffffff; }
   .terminal-cursor{
     display: inline-block;
     width: 9px;
@@ -877,7 +881,59 @@
       var el = document.getElementById('terminal-text');
       if(!el) return;
 
-      var code = "function BookCall() {\n  return (\n    <button\n      className=\"cta\"\n      onClick={handleBooking}\n    >\n      Book a call\n    </button>\n  );\n}";
+      var code = "function WebsiteBuild({ client }) {\n  return (\n    <Website\n      brand={client.brand}\n      admin\n      bookingSystem\n    />\n  );\n}";
+
+      var rules = [
+        { re: /^"[^"]*"/, cls: 'tok-str' },
+        { re: /^(function|return)\b/, cls: 'tok-kw' },
+        { re: /^<\/?[A-Za-z][\w]*/, cls: 'tok-tag' },
+        { re: /^[A-Za-z_$][\w$]*/, cls: 'tok-ident' }
+      ];
+
+      function tokenize(str){
+        var pos = 0;
+        var classes = [];
+        while(pos < str.length){
+          var matched = false;
+          for(var r = 0; r < rules.length; r++){
+            var m = rules[r].re.exec(str.slice(pos));
+            if(m && m.index === 0){
+              for(var k = 0; k < m[0].length; k++){ classes.push(rules[r].cls); }
+              pos += m[0].length;
+              matched = true;
+              break;
+            }
+          }
+          if(!matched){
+            classes.push('plain');
+            pos++;
+          }
+        }
+        return classes;
+      }
+
+      function escapeHtml(str){
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      var charClasses = tokenize(code);
+
+      function render(count){
+        var html = '';
+        var curCls = null;
+        var buf = '';
+        for(var k = 0; k < count; k++){
+          var cls = charClasses[k];
+          if(cls !== curCls){
+            if(buf){ html += '<span class="' + curCls + '">' + escapeHtml(buf) + '</span>'; }
+            curCls = cls;
+            buf = '';
+          }
+          buf += code[k];
+        }
+        if(buf){ html += '<span class="' + curCls + '">' + escapeHtml(buf) + '</span>'; }
+        el.innerHTML = html;
+      }
 
       var i = 0;
       var typing = true;
@@ -885,7 +941,7 @@
       function tick(){
         if(typing){
           if(i <= code.length){
-            el.textContent = code.slice(0, i);
+            render(i);
             i++;
             setTimeout(tick, 32);
           } else {
@@ -896,7 +952,7 @@
           if(i > 0){
             i -= 3;
             if(i < 0) i = 0;
-            el.textContent = code.slice(0, i);
+            render(i);
             setTimeout(tick, 14);
           } else {
             typing = true;
