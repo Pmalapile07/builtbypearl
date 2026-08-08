@@ -240,7 +240,7 @@
     font-weight: 700;
     letter-spacing: 0.01em;
     padding: 12px 22px;
-    border-radius: 8px;
+    border-radius: 0;
     border: none;
     -webkit-appearance: none;
     appearance: none;
@@ -324,7 +324,7 @@
   .terminal-bar .dot{
     width: 11px;
     height: 11px;
-    border-radius: 50%;
+    border-radius: 0;
     background: var(--line);
   }
   .terminal-code-row{
@@ -419,7 +419,7 @@
     font-size: 0.85rem;
     letter-spacing: 0.01em;
     padding: 12px 22px;
-    border-radius: 8px;
+    border-radius: 0;
   }
   .btn-outline:hover{ background: rgba(35,35,35,0.03); }
 
@@ -460,7 +460,7 @@
     height: 48px;
     padding: 0;
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 0;
     background: #ffffff;
     color: var(--ink);
     font-family: 'Inter', sans-serif;
@@ -496,7 +496,7 @@
     justify-content: center;
     padding: 0 20px;
     font-size: 0.7rem;
-    border-radius: 0 8px 8px 0;
+    border-radius: 0;
     background: var(--ink);
     color: #ffffff;
     font-weight: 700;
@@ -537,7 +537,7 @@
     display: inline-block;
     width: 6px;
     height: 6px;
-    border-radius: 50%;
+    border-radius: 0;
     background: var(--baby-blue);
     margin-right: 8px;
     vertical-align: middle;
@@ -598,7 +598,7 @@
     -webkit-overflow-scrolling: touch;
   }
   .carousel::-webkit-scrollbar{ height: 6px; }
-  .carousel::-webkit-scrollbar-thumb{ background: var(--line); border-radius: 4px; }
+  .carousel::-webkit-scrollbar-thumb{ background: var(--line); border-radius: 0; }
 
   .card{
     flex: 0 0 auto;
@@ -624,7 +624,7 @@
   .mockup-topbar span{
     width: 7px;
     height: 7px;
-    border-radius: 50%;
+    border-radius: 0;
     background: var(--line);
   }
   .mockup-topbar span:first-child{
@@ -638,7 +638,7 @@
   .mockup-block{
     height: 10px;
     background: var(--line);
-    border-radius: 1px;
+    border-radius: 0;
   }
   .mockup-block.big{ height: 30%; margin-top: 4px; }
   .mockup-block.short{ width: 55%; }
@@ -651,7 +651,7 @@
   .mockup-side{
     width: 24%;
     background: var(--line);
-    border-radius: 1px;
+    border-radius: 0;
   }
   .mockup-main{
     flex: 1;
@@ -662,14 +662,14 @@
   .mockup-card{
     flex: 1;
     border: 1px solid var(--line);
-    border-radius: 2px;
+    border-radius: 0;
   }
 
   .mockup-navbar{
     height: 14px;
     width: 70%;
     background: var(--line);
-    border-radius: 2px;
+    border-radius: 0;
   }
   .app-grid{
     flex: 1;
@@ -679,7 +679,7 @@
     gap: 10px;
   }
   .app-grid span{
-    border-radius: 8px;
+    border-radius: 0;
   }
 
   .card-row{
@@ -749,7 +749,7 @@
     font-size: 0.82rem;
     font-weight: 500;
     padding: 8px 14px;
-    border-radius: 20px;
+    border-radius: 0;
     white-space: nowrap;
     box-shadow: 0 4px 10px rgba(35,35,35,0.15);
     opacity: 0;
@@ -765,7 +765,7 @@
   .whatsapp-float{
     width: 56px;
     height: 56px;
-    border-radius: 50%;
+    border-radius: 0;
     background: var(--ink);
     display: flex;
     align-items: center;
@@ -787,7 +787,7 @@
     max-width: 80vw;
     background: #ffffff;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 0;
     box-shadow: 0 16px 32px rgba(35,35,35,0.16);
     padding: 20px;
     z-index: 400;
@@ -815,7 +815,7 @@
     text-align: left;
     background: none;
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: 0;
     padding: 10px 12px;
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
@@ -1015,7 +1015,7 @@
       var gutter = document.getElementById('terminal-gutter');
       if(!el) return;
 
-      var code = "import React from 'react';\n\nfunction WebsiteBuild({ client }) {\n  const {\n    brand,\n    products,\n    goals\n  } = client;\n\n  return (\n    <Website brand={brand}>\n      <Header />\n      <Hero />\n      <Ecommerce items={products} />\n      <AdminPanel access=\"owner\" />\n      <BookingSystem enabled />\n      <Footer />\n    </Website>\n  );\n}\n\nexport default WebsiteBuild;";
+      var code = "import React from 'react';\nimport { useState, useEffect } from 'react';\n\nfunction WebsiteBuild({ client }) {\n  const {\n    brand,\n    products,\n    goals\n  } = client;\n\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    fetchClientData(client.id).then(() => {\n      setLoading(false);\n    });\n  }, [client.id]);\n\n  if (loading) return <Loader />;\n\n  return (\n    <Website brand={brand}>\n      <Header />\n      <Hero />\n      <Ecommerce items={products} />\n      <AdminPanel access=\"owner\" />\n      <BookingSystem enabled />\n      <Automations goals={goals} />\n      <Footer />\n    </Website>\n  );\n}\n\nexport default WebsiteBuild;";
 
       if(gutter){
         var totalLines = code.split('\n').length;
@@ -1083,6 +1083,7 @@
 
       var i = 0;
       var typing = true;
+      var floor = Math.floor(code.length * 0.35);
 
       function tick(){
         if(typing){
@@ -1095,9 +1096,9 @@
             setTimeout(tick, 1800);
           }
         } else {
-          if(i > 0){
+          if(i > floor){
             i -= 4;
-            if(i < 0) i = 0;
+            if(i < floor) i = floor;
             render(i);
             setTimeout(tick, 8);
           } else {
