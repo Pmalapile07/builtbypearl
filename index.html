@@ -278,6 +278,25 @@
     .hero-graphic .terminal-window{
       width: 100%;
       max-width: 560px;
+      background: var(--ink);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 24px 22px;
+    }
+    .hero-graphic .terminal-bar .dot{
+      background: rgba(255,255,255,0.28);
+    }
+    .hero-graphic .terminal-gutter{
+      color: rgba(255,255,255,0.28);
+    }
+    .hero-graphic .terminal-body{
+      color: rgba(255,255,255,0.6);
+    }
+    .hero-graphic .tok-kw{ color: #e8a4b3; }
+    .hero-graphic .tok-str{ color: #7fc9bb; }
+    .hero-graphic .tok-tag{ color: #b39ddb; }
+    .hero-graphic .tok-ident{ color: #ffffff; }
+    .hero-graphic .terminal-cursor{
+      background: #ffffff;
     }
   }
 
@@ -312,7 +331,7 @@
   }
   .terminal-body{
     flex: 1;
-    color: #4a4a4a;
+    color: #6b6b6b;
     font-size: 1.05rem;
     font-weight: 600;
     line-height: 1.85;
@@ -321,8 +340,8 @@
     overflow: hidden;
   }
   .tok-kw{ color: var(--burgundy); }
-  .tok-str{ color: #2f6a5f; }
-  .tok-tag{ color: #5f4680; }
+  .tok-str{ color: var(--pearl-teal); }
+  .tok-tag{ color: var(--pearl-violet); }
   .tok-ident{ color: var(--ink); }
   .terminal-cursor{
     display: inline-block;
@@ -910,6 +929,11 @@
       var panel = document.getElementById('menu-panel');
       if(!openBtn || !panel) return;
       function openMenu(){
+        var heroButtons = document.querySelector('.hero-buttons');
+        if(heroButtons){
+          var rect = heroButtons.getBoundingClientRect();
+          panel.style.height = (rect.bottom + 40) + 'px';
+        }
         panel.classList.add('is-open');
         openBtn.setAttribute('aria-expanded', 'true');
         document.body.classList.add('menu-open');
@@ -996,8 +1020,7 @@
         }, 1400);
       }
     })();
-  </script>
-  <script>
+  </script>  <script>
     (function(){
       var el = document.getElementById('terminal-text');
       var body = document.getElementById('terminal-body');
