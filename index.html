@@ -287,22 +287,21 @@
     .hero-graphic .terminal-window{
       width: 100%;
       max-width: none;
+      height: 100%;
       background: var(--ink);
       border: none;
       border-radius: 3px;
       padding: 24px 22px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      box-sizing: border-box;
     }
     .hero-graphic .terminal-bar .dot{
       background: rgba(255,255,255,0.28);
     }
     .hero-graphic .terminal-toolbar{
       border-bottom-color: rgba(255,255,255,0.14);
-    }
-    .hero-graphic .terminal-filename{
-      color: rgba(255,255,255,0.4);
     }
     .hero-graphic .terminal-icon-btn{
       color: rgba(255,255,255,0.4);
@@ -329,9 +328,6 @@
     }
     .hero-graphic .terminal-window.is-light .terminal-toolbar{
       border-bottom-color: var(--line);
-    }
-    .hero-graphic .terminal-window.is-light .terminal-filename{
-      color: var(--ink-soft);
     }
     .hero-graphic .terminal-window.is-light .terminal-icon-btn{
       color: var(--ink-soft);
@@ -372,11 +368,6 @@
     display: flex;
     align-items: center;
     gap: 12px;
-  }
-  .terminal-filename{
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    color: var(--ink-soft);
   }
   .terminal-toolbar-right{
     display: flex;
@@ -421,6 +412,8 @@
   .terminal-code-row{
     display: flex;
     gap: 20px;
+    flex: 1;
+    min-height: 0;
   }
   .terminal-gutter{
     flex: 0 0 auto;
@@ -429,7 +422,7 @@
     font-size: 1.05rem;
     font-weight: 400;
     line-height: 1.85;
-    height: 360px;
+    height: 100%;
     overflow: hidden;
     user-select: none;
   }
@@ -440,7 +433,7 @@
     font-weight: 600;
     line-height: 1.85;
     white-space: pre-wrap;
-    height: 360px;
+    height: 100%;
     overflow: hidden;
   }
   .tok-kw{ color: var(--burgundy); }
@@ -987,7 +980,6 @@
             <div class="terminal-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             </div>
-            <span class="terminal-filename">WebsiteBuild.jsx</span>
           </div>
           <div class="terminal-toolbar-right">
             <button type="button" class="terminal-icon-btn" id="terminal-copy" aria-label="Copy code">
