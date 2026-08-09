@@ -284,172 +284,31 @@
       justify-content: stretch;
       border-left: 1px solid var(--ink);
     }
-    .hero-graphic .terminal-window{
+    .hero-graphic .binary-panel{
       width: 100%;
-      max-width: none;
       height: 100%;
-      background: var(--ink);
-      border: none;
-      border-radius: 3px;
-      padding: 24px 22px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      box-sizing: border-box;
-    }
-    .hero-graphic .terminal-bar .dot{
-      background: rgba(255,255,255,0.28);
-    }
-    .hero-graphic .terminal-toolbar{
-      border-bottom-color: rgba(255,255,255,0.14);
-    }
-    .hero-graphic .terminal-icon-btn{
-      color: rgba(255,255,255,0.4);
-    }
-    .hero-graphic .terminal-icon-btn:hover{
-      color: #ffffff;
-    }
-    .hero-graphic .terminal-gutter{
-      color: rgba(255,255,255,0.28);
-    }
-    .hero-graphic .terminal-body{
-      color: rgba(255,255,255,0.6);
-    }
-    .hero-graphic .tok-kw{ color: #e8a4b3; }
-    .hero-graphic .tok-str{ color: #7fc9bb; }
-    .hero-graphic .tok-tag{ color: #b39ddb; }
-    .hero-graphic .tok-ident{ color: #ffffff; }
-    .hero-graphic .terminal-cursor{
-      background: #ffffff;
-    }
-
-    .hero-graphic .terminal-window.is-light{
-      background: #fafaf9;
-    }
-    .hero-graphic .terminal-window.is-light .terminal-toolbar{
-      border-bottom-color: var(--line);
-    }
-    .hero-graphic .terminal-window.is-light .terminal-icon-btn{
-      color: var(--ink-soft);
-    }
-    .hero-graphic .terminal-window.is-light .terminal-icon-btn:hover{
-      color: var(--ink);
-    }
-    .hero-graphic .terminal-window.is-light .terminal-bar .dot{
-      background: var(--line);
-    }
-    .hero-graphic .terminal-window.is-light .terminal-gutter{
-      color: var(--line);
-    }
-    .hero-graphic .terminal-window.is-light .terminal-body{
-      color: var(--ink-soft);
-    }
-    .hero-graphic .terminal-window.is-light .tok-kw{ color: var(--burgundy); }
-    .hero-graphic .terminal-window.is-light .tok-str{ color: var(--pearl-teal); }
-    .hero-graphic .terminal-window.is-light .tok-tag{ color: var(--pearl-violet); }
-    .hero-graphic .terminal-window.is-light .tok-ident{ color: var(--ink); }
-    .hero-graphic .terminal-window.is-light .terminal-cursor{
-      background: var(--ink);
     }
   }
 
-  .terminal-window{
+  .binary-panel{
+    background: #ffffff;
+    padding: 24px 22px;
     font-family: 'Courier New', Courier, monospace;
-  }
-  .terminal-toolbar{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 16px;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--line);
-  }
-  .terminal-toolbar-left{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .terminal-toolbar-right{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .terminal-icon-btn{
-    background: none;
-    border: none;
-    -webkit-appearance: none;
-    appearance: none;
-    outline: none;
-    padding: 4px;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--ink-soft);
-    transition: color 0.2s ease;
-  }
-  .terminal-icon-btn:hover{
-    color: var(--ink);
-  }
-  .terminal-icon-btn svg{
-    width: 15px;
-    height: 15px;
-  }
-  .terminal-icon-btn .icon-sun{ display: none; }
-  .terminal-window.is-light .terminal-icon-btn .icon-sun{ display: block; }
-  .terminal-window.is-light .terminal-icon-btn .icon-moon{ display: none; }
-  .terminal-bar{
-    display: flex;
-    gap: 7px;
-  }
-  .terminal-bar .dot{
-    width: 11px;
-    height: 11px;
-    border-radius: 3px;
-    background: var(--line);
-  }
-  .terminal-code-row{
-    display: flex;
-    gap: 20px;
-    flex: 1;
-    min-height: 0;
-  }
-  .terminal-gutter{
-    flex: 0 0 auto;
-    text-align: right;
-    color: var(--line);
-    font-size: 1.05rem;
-    font-weight: 400;
-    line-height: 1.85;
-    height: 100%;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    letter-spacing: 0.14em;
     overflow: hidden;
+    box-sizing: border-box;
+    word-break: break-all;
     user-select: none;
   }
-  .terminal-body{
-    flex: 1;
-    color: #6b6b6b;
-    font-size: 1.05rem;
-    font-weight: 600;
-    line-height: 1.85;
-    white-space: pre-wrap;
-    height: 100%;
-    overflow: hidden;
+  .binary-panel .bit{
+    color: var(--line);
   }
-  .tok-kw{ color: var(--burgundy); }
-  .tok-str{ color: var(--pearl-teal); }
-  .tok-tag{ color: var(--pearl-violet); }
-  .tok-ident{ color: var(--ink); }
-  .terminal-cursor{
-    display: inline-block;
-    width: 9px;
-    height: 1em;
-    background: var(--ink);
-    vertical-align: text-bottom;
-    animation: term-blink 1s steps(1) infinite;
-    margin-left: 1px;
+  .binary-panel .bit-strong{
+    color: var(--ink);
+    font-weight: 700;
   }
-  @keyframes term-blink{ 50%{ opacity: 0; } }
 
   h1{
     font-family: 'Inter', sans-serif;
@@ -974,28 +833,7 @@
       </div>
     </div>
     <div class="hero-graphic">
-      <div class="terminal-window" id="terminal-window">
-        <div class="terminal-toolbar">
-          <div class="terminal-toolbar-left">
-            <div class="terminal-bar">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            </div>
-          </div>
-          <div class="terminal-toolbar-right">
-            <button type="button" class="terminal-icon-btn" id="terminal-copy" aria-label="Copy code">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="1"></rect><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
-            </button>
-            <button type="button" class="terminal-icon-btn" id="terminal-theme-toggle" aria-label="Toggle editor theme">
-              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
-            </button>
-          </div>
-        </div>
-        <div class="terminal-code-row">
-          <div class="terminal-gutter" id="terminal-gutter"></div>
-          <div class="terminal-body" id="terminal-body"><span id="terminal-text"></span><span class="terminal-cursor"></span></div>
-        </div>
-      </div>
+      <div class="binary-panel" id="binary-panel" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -1105,123 +943,20 @@
         }, 1400);
       }
     })();
-  </script>  <script>
+  </script>
+  <script>
     (function(){
-      var el = document.getElementById('terminal-text');
-      var body = document.getElementById('terminal-body');
-      var gutter = document.getElementById('terminal-gutter');
-      if(!el) return;
+      var panel = document.getElementById('binary-panel');
+      if(!panel) return;
 
-      var code = "import React from 'react';\nimport { useState, useEffect } from 'react';\n\nfunction WebsiteBuild({ client }) {\n  const {\n    brand,\n    products,\n    goals\n  } = client;\n\n  const [loading, setLoading] = useState(true);\n  const [stage, setStage] = useState('draft');\n\n  useEffect(() => {\n    fetchClientData(client.id).then((data) => {\n      setStage(data.stage);\n      setLoading(false);\n    });\n  }, [client.id]);\n\n  const handlePublish = () => {\n    setStage('live');\n    notifyClient(client.id, 'Your site is live.');\n  };\n\n  if (loading) return <Loader />;\n\n  return (\n    <Website brand={brand} stage={stage}>\n      <Header />\n      <Hero />\n      <Ecommerce items={products} />\n      <AdminPanel access=\"owner\" />\n      <BookingSystem enabled />\n      <Automations goals={goals} />\n      <PublishButton onClick={handlePublish} />\n      <Footer />\n    </Website>\n  );\n}\n\nfunction AdminPanel({ access }) {\n  const [tab, setTab] = useState('orders');\n\n  return (\n    <Panel access={access}>\n      <Tabs active={tab} onChange={setTab}>\n        <Tab id=\"orders\" label=\"Orders\" />\n        <Tab id=\"inventory\" label=\"Inventory\" />\n        <Tab id=\"bookings\" label=\"Bookings\" />\n      </Tabs>\n      <PanelBody tab={tab} />\n    </Panel>\n  );\n}\n\nexport default WebsiteBuild;";
-
-      if(gutter){
-        var totalLines = code.split('\n').length;
-        var gutterHtml = '';
-        for(var ln = 1; ln <= totalLines; ln++){
-          gutterHtml += '<div>' + ln + '</div>';
-        }
-        gutter.innerHTML = gutterHtml;
+      var totalChars = 2800;
+      var html = '';
+      for(var k = 0; k < totalChars; k++){
+        var digit = Math.random() < 0.5 ? '0' : '1';
+        var strong = Math.random() < 0.16;
+        html += strong ? ('<span class="bit-strong">' + digit + '</span>') : ('<span class="bit">' + digit + '</span>');
       }
-
-      var rules = [
-        { re: /^'[^']*'/, cls: 'tok-str' },
-        { re: /^"[^"]*"/, cls: 'tok-str' },
-        { re: /^(import|from|export|default|function|return|const)\b/, cls: 'tok-kw' },
-        { re: /^<\/?[A-Za-z][\w]*/, cls: 'tok-tag' },
-        { re: /^[A-Za-z_$][\w$]*/, cls: 'tok-ident' }
-      ];
-
-      function tokenize(str){
-        var pos = 0;
-        var classes = [];
-        while(pos < str.length){
-          var matched = false;
-          for(var r = 0; r < rules.length; r++){
-            var m = rules[r].re.exec(str.slice(pos));
-            if(m && m.index === 0){
-              for(var k = 0; k < m[0].length; k++){ classes.push(rules[r].cls); }
-              pos += m[0].length;
-              matched = true;
-              break;
-            }
-          }
-          if(!matched){
-            classes.push('plain');
-            pos++;
-          }
-        }
-        return classes;
-      }
-
-      function escapeHtml(str){
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      }
-
-      var charClasses = tokenize(code);
-
-      function render(count){
-        var html = '';
-        var curCls = null;
-        var buf = '';
-        for(var k = 0; k < count; k++){
-          var cls = charClasses[k];
-          if(cls !== curCls){
-            if(buf){ html += '<span class="' + curCls + '">' + escapeHtml(buf) + '</span>'; }
-            curCls = cls;
-            buf = '';
-          }
-          buf += code[k];
-        }
-        if(buf){ html += '<span class="' + curCls + '">' + escapeHtml(buf) + '</span>'; }
-        el.innerHTML = html;
-        if(body){ body.scrollTop = body.scrollHeight; }
-        if(gutter){ gutter.scrollTop = body ? body.scrollTop : 0; }
-      }
-
-      var i = 0;
-      var typing = true;
-      var floor = Math.max(0, code.length - 260);
-
-      function tick(){
-        if(typing){
-          if(i <= code.length){
-            render(i);
-            i++;
-            setTimeout(tick, 16);
-          } else {
-            typing = false;
-            setTimeout(tick, 1800);
-          }
-        } else {
-          if(i > floor){
-            i -= 4;
-            if(i < floor) i = floor;
-            render(i);
-            setTimeout(tick, 8);
-          } else {
-            typing = true;
-            setTimeout(tick, 500);
-          }
-        }
-      }
-      tick();
-
-      var copyBtn = document.getElementById('terminal-copy');
-      if(copyBtn){
-        copyBtn.addEventListener('click', function(){
-          if(navigator.clipboard){
-            navigator.clipboard.writeText(code).catch(function(){});
-          }
-        });
-      }
-
-      var themeBtn = document.getElementById('terminal-theme-toggle');
-      var terminalWindow = document.getElementById('terminal-window');
-      if(themeBtn && terminalWindow){
-        themeBtn.addEventListener('click', function(){
-          terminalWindow.classList.toggle('is-light');
-        });
-      }
+      panel.innerHTML = html;
     })();
   </script>
 </body>
