@@ -240,7 +240,7 @@
     font-weight: 700;
     letter-spacing: 0.01em;
     padding: 12px 22px;
-    border-radius: 0;
+    border-radius: 3px;
     border: none;
     -webkit-appearance: none;
     appearance: none;
@@ -269,7 +269,7 @@
       gap: 0;
       padding: 0;
       border: 1px solid var(--ink);
-      border-radius: 0;
+      border-radius: 3px;
     }
     .hero .hero-buttons{ display: none; }
     .hero-content{
@@ -289,7 +289,7 @@
       max-width: none;
       background: var(--ink);
       border: none;
-      border-radius: 0;
+      border-radius: 3px;
       padding: 24px 22px;
       display: flex;
       flex-direction: column;
@@ -297,6 +297,18 @@
     }
     .hero-graphic .terminal-bar .dot{
       background: rgba(255,255,255,0.28);
+    }
+    .hero-graphic .terminal-toolbar{
+      border-bottom-color: rgba(255,255,255,0.14);
+    }
+    .hero-graphic .terminal-filename{
+      color: rgba(255,255,255,0.4);
+    }
+    .hero-graphic .terminal-icon-btn{
+      color: rgba(255,255,255,0.4);
+    }
+    .hero-graphic .terminal-icon-btn:hover{
+      color: #ffffff;
     }
     .hero-graphic .terminal-gutter{
       color: rgba(255,255,255,0.28);
@@ -311,20 +323,99 @@
     .hero-graphic .terminal-cursor{
       background: #ffffff;
     }
+
+    .hero-graphic .terminal-window.is-light{
+      background: #fafaf9;
+    }
+    .hero-graphic .terminal-window.is-light .terminal-toolbar{
+      border-bottom-color: var(--line);
+    }
+    .hero-graphic .terminal-window.is-light .terminal-filename{
+      color: var(--ink-soft);
+    }
+    .hero-graphic .terminal-window.is-light .terminal-icon-btn{
+      color: var(--ink-soft);
+    }
+    .hero-graphic .terminal-window.is-light .terminal-icon-btn:hover{
+      color: var(--ink);
+    }
+    .hero-graphic .terminal-window.is-light .terminal-bar .dot{
+      background: var(--line);
+    }
+    .hero-graphic .terminal-window.is-light .terminal-gutter{
+      color: var(--line);
+    }
+    .hero-graphic .terminal-window.is-light .terminal-body{
+      color: var(--ink-soft);
+    }
+    .hero-graphic .terminal-window.is-light .tok-kw{ color: var(--burgundy); }
+    .hero-graphic .terminal-window.is-light .tok-str{ color: var(--pearl-teal); }
+    .hero-graphic .terminal-window.is-light .tok-tag{ color: var(--pearl-violet); }
+    .hero-graphic .terminal-window.is-light .tok-ident{ color: var(--ink); }
+    .hero-graphic .terminal-window.is-light .terminal-cursor{
+      background: var(--ink);
+    }
   }
 
   .terminal-window{
     font-family: 'Courier New', Courier, monospace;
   }
+  .terminal-toolbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .terminal-toolbar-left{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .terminal-filename{
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+  .terminal-toolbar-right{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .terminal-icon-btn{
+    background: none;
+    border: none;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    padding: 4px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: color 0.2s ease;
+  }
+  .terminal-icon-btn:hover{
+    color: var(--ink);
+  }
+  .terminal-icon-btn svg{
+    width: 15px;
+    height: 15px;
+  }
+  .terminal-icon-btn .icon-sun{ display: none; }
+  .terminal-window.is-light .terminal-icon-btn .icon-sun{ display: block; }
+  .terminal-window.is-light .terminal-icon-btn .icon-moon{ display: none; }
   .terminal-bar{
     display: flex;
     gap: 7px;
-    padding: 0 0 16px;
   }
   .terminal-bar .dot{
     width: 11px;
     height: 11px;
-    border-radius: 0;
+    border-radius: 3px;
     background: var(--line);
   }
   .terminal-code-row{
@@ -419,7 +510,7 @@
     font-size: 0.85rem;
     letter-spacing: 0.01em;
     padding: 12px 22px;
-    border-radius: 0;
+    border-radius: 3px;
   }
   .btn-outline:hover{ background: rgba(35,35,35,0.03); }
 
@@ -460,7 +551,7 @@
     height: 48px;
     padding: 0;
     border: 1px solid transparent;
-    border-radius: 0;
+    border-radius: 3px;
     background: #ffffff;
     color: var(--ink);
     font-family: 'Inter', sans-serif;
@@ -496,7 +587,7 @@
     justify-content: center;
     padding: 0 20px;
     font-size: 0.7rem;
-    border-radius: 0;
+    border-radius: 3px;
     background: var(--ink);
     color: #ffffff;
     font-weight: 700;
@@ -537,7 +628,7 @@
     display: inline-block;
     width: 6px;
     height: 6px;
-    border-radius: 0;
+    border-radius: 3px;
     background: var(--baby-blue);
     margin-right: 8px;
     vertical-align: middle;
@@ -598,7 +689,7 @@
     -webkit-overflow-scrolling: touch;
   }
   .carousel::-webkit-scrollbar{ height: 6px; }
-  .carousel::-webkit-scrollbar-thumb{ background: var(--line); border-radius: 0; }
+  .carousel::-webkit-scrollbar-thumb{ background: var(--line); border-radius: 3px; }
 
   .card{
     flex: 0 0 auto;
@@ -624,7 +715,7 @@
   .mockup-topbar span{
     width: 7px;
     height: 7px;
-    border-radius: 0;
+    border-radius: 3px;
     background: var(--line);
   }
   .mockup-topbar span:first-child{
@@ -638,7 +729,7 @@
   .mockup-block{
     height: 10px;
     background: var(--line);
-    border-radius: 0;
+    border-radius: 3px;
   }
   .mockup-block.big{ height: 30%; margin-top: 4px; }
   .mockup-block.short{ width: 55%; }
@@ -651,7 +742,7 @@
   .mockup-side{
     width: 24%;
     background: var(--line);
-    border-radius: 0;
+    border-radius: 3px;
   }
   .mockup-main{
     flex: 1;
@@ -662,14 +753,14 @@
   .mockup-card{
     flex: 1;
     border: 1px solid var(--line);
-    border-radius: 0;
+    border-radius: 3px;
   }
 
   .mockup-navbar{
     height: 14px;
     width: 70%;
     background: var(--line);
-    border-radius: 0;
+    border-radius: 3px;
   }
   .app-grid{
     flex: 1;
@@ -679,7 +770,7 @@
     gap: 10px;
   }
   .app-grid span{
-    border-radius: 0;
+    border-radius: 3px;
   }
 
   .card-row{
@@ -749,7 +840,7 @@
     font-size: 0.82rem;
     font-weight: 500;
     padding: 8px 14px;
-    border-radius: 0;
+    border-radius: 3px;
     white-space: nowrap;
     box-shadow: 0 4px 10px rgba(35,35,35,0.15);
     opacity: 0;
@@ -765,7 +856,7 @@
   .whatsapp-float{
     width: 56px;
     height: 56px;
-    border-radius: 0;
+    border-radius: 50%;
     background: var(--ink);
     display: flex;
     align-items: center;
@@ -787,7 +878,7 @@
     max-width: 80vw;
     background: #ffffff;
     border: 1px solid var(--line);
-    border-radius: 0;
+    border-radius: 3px;
     box-shadow: 0 16px 32px rgba(35,35,35,0.16);
     padding: 20px;
     z-index: 400;
@@ -815,7 +906,7 @@
     text-align: left;
     background: none;
     border: 1px solid var(--line);
-    border-radius: 0;
+    border-radius: 3px;
     padding: 10px 12px;
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
@@ -890,9 +981,23 @@
       </div>
     </div>
     <div class="hero-graphic">
-      <div class="terminal-window">
-        <div class="terminal-bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <div class="terminal-window" id="terminal-window">
+        <div class="terminal-toolbar">
+          <div class="terminal-toolbar-left">
+            <div class="terminal-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <span class="terminal-filename">WebsiteBuild.jsx</span>
+          </div>
+          <div class="terminal-toolbar-right">
+            <button type="button" class="terminal-icon-btn" id="terminal-copy" aria-label="Copy code">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="1"></rect><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
+            </button>
+            <button type="button" class="terminal-icon-btn" id="terminal-theme-toggle" aria-label="Toggle editor theme">
+              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+            </button>
+          </div>
         </div>
         <div class="terminal-code-row">
           <div class="terminal-gutter" id="terminal-gutter"></div>
@@ -1015,7 +1120,7 @@
       var gutter = document.getElementById('terminal-gutter');
       if(!el) return;
 
-      var code = "import React from 'react';\nimport { useState, useEffect } from 'react';\n\nfunction WebsiteBuild({ client }) {\n  const {\n    brand,\n    products,\n    goals\n  } = client;\n\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    fetchClientData(client.id).then(() => {\n      setLoading(false);\n    });\n  }, [client.id]);\n\n  if (loading) return <Loader />;\n\n  return (\n    <Website brand={brand}>\n      <Header />\n      <Hero />\n      <Ecommerce items={products} />\n      <AdminPanel access=\"owner\" />\n      <BookingSystem enabled />\n      <Automations goals={goals} />\n      <Footer />\n    </Website>\n  );\n}\n\nexport default WebsiteBuild;";
+      var code = "import React from 'react';\nimport { useState, useEffect } from 'react';\n\nfunction WebsiteBuild({ client }) {\n  const {\n    brand,\n    products,\n    goals\n  } = client;\n\n  const [loading, setLoading] = useState(true);\n  const [stage, setStage] = useState('draft');\n\n  useEffect(() => {\n    fetchClientData(client.id).then((data) => {\n      setStage(data.stage);\n      setLoading(false);\n    });\n  }, [client.id]);\n\n  const handlePublish = () => {\n    setStage('live');\n    notifyClient(client.id, 'Your site is live.');\n  };\n\n  if (loading) return <Loader />;\n\n  return (\n    <Website brand={brand} stage={stage}>\n      <Header />\n      <Hero />\n      <Ecommerce items={products} />\n      <AdminPanel access=\"owner\" />\n      <BookingSystem enabled />\n      <Automations goals={goals} />\n      <PublishButton onClick={handlePublish} />\n      <Footer />\n    </Website>\n  );\n}\n\nfunction AdminPanel({ access }) {\n  const [tab, setTab] = useState('orders');\n\n  return (\n    <Panel access={access}>\n      <Tabs active={tab} onChange={setTab}>\n        <Tab id=\"orders\" label=\"Orders\" />\n        <Tab id=\"inventory\" label=\"Inventory\" />\n        <Tab id=\"bookings\" label=\"Bookings\" />\n      </Tabs>\n      <PanelBody tab={tab} />\n    </Panel>\n  );\n}\n\nexport default WebsiteBuild;";
 
       if(gutter){
         var totalLines = code.split('\n').length;
@@ -1083,7 +1188,7 @@
 
       var i = 0;
       var typing = true;
-      var floor = Math.floor(code.length * 0.35);
+      var floor = Math.max(0, code.length - 260);
 
       function tick(){
         if(typing){
@@ -1108,6 +1213,23 @@
         }
       }
       tick();
+
+      var copyBtn = document.getElementById('terminal-copy');
+      if(copyBtn){
+        copyBtn.addEventListener('click', function(){
+          if(navigator.clipboard){
+            navigator.clipboard.writeText(code).catch(function(){});
+          }
+        });
+      }
+
+      var themeBtn = document.getElementById('terminal-theme-toggle');
+      var terminalWindow = document.getElementById('terminal-window');
+      if(themeBtn && terminalWindow){
+        themeBtn.addEventListener('click', function(){
+          terminalWindow.classList.toggle('is-light');
+        });
+      }
     })();
   </script>
 </body>
