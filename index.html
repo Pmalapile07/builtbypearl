@@ -262,7 +262,7 @@
   @media (min-width: 900px){
     .hero{
       width: auto;
-      height: 280px;
+      height: 260px;
       max-width: none;
       margin: 6vh 6vw;
       display: grid;
@@ -277,12 +277,13 @@
     }
     .hero .hero-buttons{ display: none; }
     .hero-content{
-      padding: 6%;
+      padding: 48px 6%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       overflow: hidden;
       min-height: 0;
+      box-sizing: border-box;
     }
     .hero-content h1{
       font-size: clamp(1.4rem, 2.6vw, 1.9rem);
