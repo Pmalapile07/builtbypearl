@@ -270,7 +270,6 @@
       align-items: stretch;
       gap: 0;
       padding: 0;
-      border: 1px solid var(--ink);
       border-radius: 3px;
       overflow: hidden;
       box-sizing: border-box;
@@ -296,7 +295,6 @@
       display: flex;
       align-items: stretch;
       justify-content: stretch;
-      border-left: 1px solid var(--ink);
       overflow: hidden;
       min-height: 0;
     }
@@ -311,26 +309,19 @@
     background: #ffffff;
     padding: 24px 22px;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 0.68rem;
-    line-height: 1.05;
-    letter-spacing: 0.08em;
+    font-size: 0.62rem;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
     overflow: hidden;
     box-sizing: border-box;
     user-select: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--ink);
   }
   .binary-panel .ascii-art{
     white-space: pre;
-    text-align: center;
-  }
-  .binary-panel .bit{
-    color: var(--line);
-  }
-  .binary-panel .bit-strong{
-    color: var(--ink);
-    font-weight: 700;
   }
 
   h1{
@@ -972,47 +963,74 @@
       var panel = document.getElementById('binary-panel');
       if(!panel) return;
 
-      // Butterfly silhouette drawn from binary digits.
-      // '#' marks a pixel of the butterfly (rendered bold/dark),
-      // '.' marks background (rendered faint), each still a random 0/1.
-      var mask = [
-        "..............................",
-        "............#.....#...........",
-        ".............#.#.#............",
-        ".............#####............",
-        "......######...#...######.....",
-        "....#########..#..#########...",
-        "..############.#.############.",
-        "..############.#.############.",
-        "..############.#.############.",
-        "...#########...#...#########..",
-        ".....#####.....#.....#####....",
-        "...............#..............",
-        ".......#####...#...#####......",
-        "......########.#.########.....",
-        ".....#########.#.#########....",
-        "......########.#.########.....",
-        ".......######..#..######......",
-        "...............#..............",
-        "...............#..............",
-        "...............#..............",
-        "...............#..............",
-        ".............................."
-      ];
+      // Renders a butterfly as shaded ASCII art: each cell's density
+      // (soft-edged shape mask x a directional light gradient) is mapped
+      // to a character ramp from sparse to dense, the same technique
+      // used to turn a grayscale image into ASCII art.
+      var COLS = 64;
+      var ROWS = 32;
+      var RAMP = [' ', '.', ';', '?', '+', '*', '%', 'S', '#', '@'];
 
-      var html = '<span class="ascii-art">';
-      for(var r = 0; r < mask.length; r++){
-        var row = mask[r];
-        for(var c = 0; c < row.length; c++){
-          var digit = Math.random() < 0.5 ? '0' : '1';
-          var cls = row[c] === '#' ? 'bit-strong' : 'bit';
-          html += '<span class="' + cls + '">' + digit + '</span>';
-        }
-        if(r < mask.length - 1){ html += '\n'; }
+      function ellipseSoft(x, y, cx, cy, rx, ry, rot, edge){
+        edge = edge || 0.16;
+        var ca = Math.cos(rot), sa = Math.sin(rot);
+        var dx = x - cx, dy = y - cy;
+        var rxr = dx * ca + dy * sa;
+        var ryr = -dx * sa + dy * ca;
+        var d = Math.sqrt((rxr / rx) * (rxr / rx) + (ryr / ry) * (ryr / ry));
+        return Math.max(0, Math.min(1, (1 + edge - d) / edge));
       }
-      html += '</span>';
 
-      panel.innerHTML = html;
+      function shapeMask(x, y){
+        var m = 0;
+        if(x > 0) m = Math.max(m, ellipseSoft(x, y, 0.52, -0.40, 0.46, 0.36, 18 * Math.PI / 180));
+        if(x < 0) m = Math.max(m, ellipseSoft(x, y, -0.52, -0.40, 0.46, 0.36, -18 * Math.PI / 180));
+        if(x > 0) m = Math.max(m, ellipseSoft(x, y, 0.40, 0.34, 0.32, 0.28, -14 * Math.PI / 180));
+        if(x < 0) m = Math.max(m, ellipseSoft(x, y, -0.40, 0.34, 0.32, 0.28, 14 * Math.PI / 180));
+        if(Math.abs(y) < 1.0){
+          m = Math.max(m, Math.max(0, Math.min(1, 1.3 - Math.abs(x) / 0.05)));
+        }
+        return m;
+      }
+
+      function antennaMask(x, y){
+        if(y > -1.35 && y < -0.85){
+          var t = (-0.85 - y) / 0.5;
+          var target = 0.03 + 0.15 * t;
+          if(Math.abs(Math.abs(x) - target) < 0.035) return 1;
+        }
+        return 0;
+      }
+
+      function lightGradient(x, y){
+        var lx = -0.5, ly = -0.6;
+        var dist = Math.hypot(x - lx, y - ly);
+        var val = 1 - dist / 1.8;
+        return Math.max(0.15, Math.min(1, val));
+      }
+
+      var lines = [];
+      for(var row = 0; row < ROWS; row++){
+        var line = '';
+        for(var col = 0; col < COLS; col++){
+          var x = (col - COLS / 2 + 0.5) / (COLS / 2);
+          var y = (row - ROWS / 2 + 0.5) / (ROWS / 2) * 1.55;
+
+          var sm = Math.max(shapeMask(x, y), antennaMask(x, y));
+          if(sm <= 0.02){
+            line += ' ';
+            continue;
+          }
+          var light = lightGradient(x, y);
+          var density = sm * (0.35 + 0.65 * (1 - light));
+          density = Math.max(0, Math.min(1, density));
+          var idx = Math.round(density * (RAMP.length - 1));
+          line += RAMP[idx];
+        }
+        lines.push(line);
+      }
+
+      panel.innerHTML = '<span class="ascii-art">' + lines.join('\n') + '</span>';
     })();
   </script>
 </body>
