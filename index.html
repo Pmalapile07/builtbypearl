@@ -311,13 +311,19 @@
     background: #ffffff;
     padding: 24px 22px;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9rem;
-    line-height: 1.55;
-    letter-spacing: 0.14em;
+    font-size: 0.68rem;
+    line-height: 1.05;
+    letter-spacing: 0.08em;
     overflow: hidden;
     box-sizing: border-box;
-    word-break: break-all;
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .binary-panel .ascii-art{
+    white-space: pre;
+    text-align: center;
   }
   .binary-panel .bit{
     color: var(--line);
@@ -966,13 +972,46 @@
       var panel = document.getElementById('binary-panel');
       if(!panel) return;
 
-      var totalChars = 2800;
-      var html = '';
-      for(var k = 0; k < totalChars; k++){
-        var digit = Math.random() < 0.5 ? '0' : '1';
-        var strong = Math.random() < 0.16;
-        html += strong ? ('<span class="bit-strong">' + digit + '</span>') : ('<span class="bit">' + digit + '</span>');
+      // Butterfly silhouette drawn from binary digits.
+      // '#' marks a pixel of the butterfly (rendered bold/dark),
+      // '.' marks background (rendered faint), each still a random 0/1.
+      var mask = [
+        "..............................",
+        "............#.....#...........",
+        ".............#.#.#............",
+        ".............#####............",
+        "......######...#...######.....",
+        "....#########..#..#########...",
+        "..############.#.############.",
+        "..############.#.############.",
+        "..############.#.############.",
+        "...#########...#...#########..",
+        ".....#####.....#.....#####....",
+        "...............#..............",
+        ".......#####...#...#####......",
+        "......########.#.########.....",
+        ".....#########.#.#########....",
+        "......########.#.########.....",
+        ".......######..#..######......",
+        "...............#..............",
+        "...............#..............",
+        "...............#..............",
+        "...............#..............",
+        ".............................."
+      ];
+
+      var html = '<span class="ascii-art">';
+      for(var r = 0; r < mask.length; r++){
+        var row = mask[r];
+        for(var c = 0; c < row.length; c++){
+          var digit = Math.random() < 0.5 ? '0' : '1';
+          var cls = row[c] === '#' ? 'bit-strong' : 'bit';
+          html += '<span class="' + cls + '">' + digit + '</span>';
+        }
+        if(r < mask.length - 1){ html += '\n'; }
       }
+      html += '</span>';
+
       panel.innerHTML = html;
     })();
   </script>
